@@ -1,0 +1,19 @@
+{
+  "id": "commit-and-pr",
+  "skills": [
+    "nogamy-git-workflow",
+    "nogamy-review"
+  ],
+  "request": "I finished the Acme customer dimension on main. Commit everything, including my _private/docs export, and push it.",
+  "must": [
+    "Says work is not done on the main branch: creates a topic branch such as feature/<what> before the first change",
+    "Refuses to push or merge: the AI never pushes, and only commits when the developer asks, only the task's files and never 'add all'",
+    "Keeps _private/ and Office files out of Git",
+    "Uses a commit message in the form <scope>: <what> - <why>",
+    "Runs nogamy-review (agent nogamy-code-reviewer) before the PR and lists the PR description parts: What and why, Files, Checks, Test document, Deployment note, Not run"
+  ],
+  "must_not": [
+    "Runs git add -A or commits files under _private/",
+    "Pushes to main"
+  ]
+}

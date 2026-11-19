@@ -1,0 +1,42 @@
+# Core repo only. The core owner labels a feedback issue `fix-approved` -> an agent drafts the fix as a PR:
+# the smallest change to the core files the issue names, an eval case that proves it, validate + tests run.
+# A person reviews and merges; the agent never merges, never releases, never touches a project.
+# Needs: the Claude GitHub app on the core repo and the ANTHROPIC_API_KEY secret (nogamy/docs/setup.md).
+name: nogamy-core-fix
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  fix:
+    if: vars.NOGAMY_IS_CORE_REPO == 'true' && github.event.label.name == 'fix-approved'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          branch_prefix: nogamy/fix-
+          claude_args: "--max-turns 60"
+          prompt: |
+            You work in the Nogamy core repo (this repository). Read AGENTS.md first; in the core repo the core
+            files are editable. Issue #${{ github.event.issue.number }} is feedback the core owner approved for a fix.
+
+            1. Read the issue. Fix exactly what it asks, with the smallest change, in the files it names
+               (skills in .claude/skills/nogamy-*, standards/, tools/, nogamy/). Follow nogamy-create-skill for a
+               skill change. No client names, no personal data, no secrets.
+            2. Add or extend one case in nogamy/evals/cases/ whose must / must_not lines prove the fix stays fixed.
+            3. Run `python3 nogamy/ops/validate_core.py` and `python3 nogamy/tests/run_all.py`; both must pass.
+            4. Open a pull request to the default branch titled "fix: <what> (#${{ github.event.issue.number }})",
+               with: what changed and why, the eval case, and the output of both commands. Then comment on the
+               issue with the PR link.
+            Never merge, never release, never edit a workflow file or core-checksums.txt. If the issue is unclear
+            or would need a decision (a rule change, a new skill), do not change files: comment on the issue with
+            the question instead.

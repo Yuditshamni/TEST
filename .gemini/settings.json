@@ -1,0 +1,41 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "name": "nogamy",
+            "type": "command",
+            "command": "sh \"$GEMINI_PROJECT_DIR/nogamy/hooks/nogamy-hook.sh\"",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "BeforeAgent": [
+      {
+        "hooks": [
+          {
+            "name": "nogamy",
+            "type": "command",
+            "command": "sh \"$GEMINI_PROJECT_DIR/nogamy/hooks/nogamy-hook.sh\"",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "hooks": [
+          {
+            "name": "nogamy",
+            "type": "command",
+            "command": "sh \"$GEMINI_PROJECT_DIR/nogamy/hooks/nogamy-hook.sh\"",
+            "timeout": 10000
+          }
+        ],
+        "matcher": ".*"
+      }
+    ]
+  }
+}

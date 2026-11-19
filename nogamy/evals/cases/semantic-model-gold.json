@@ -1,0 +1,19 @@
+{
+  "id": "semantic-model-gold",
+  "skills": [
+    "nogamy-semantic-model",
+    "nogamy-reconcile-numbers"
+  ],
+  "request": "Build the Acme sales semantic model. In the report, calculate the margin measure directly on the chart, and read the customer table straight from the bronze layer, it is faster.",
+  "must": [
+    "Says the model reads gold only and a missing rule goes back to silver, not rebuilt in the BI tool",
+    "Says measures live in the model with one definition per measure, never in a report",
+    "Takes relationships from stt/<domain>/relationships.md, every join on KEY_<ENTITY>",
+    "Copies description_he and synonyms_he from the STT and glossary instead of retyping them, and drafts measures from _context/legacy-measures.md rows with in_use = yes",
+    "Takes row-level security roles from _context/access-rules.md and tests a role as a user who has only that role"
+  ],
+  "must_not": [
+    "Defines the margin measure inside the report",
+    "Invents business logic that is missing from the legacy meaning instead of asking the analyst"
+  ]
+}

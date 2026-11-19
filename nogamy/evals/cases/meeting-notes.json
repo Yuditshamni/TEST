@@ -1,0 +1,18 @@
+{
+  "id": "meeting-notes",
+  "skills": [
+    "nogamy-project-memory",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "I pasted the notes from today's meeting with Acme: they decided the customer key is the account number, the status codes list is still unknown, and a new term 'active customer' was defined. Update the project.",
+  "must": [
+    "Saves the notes as received (Markdown, not summarized) under _private/raw/meetings/<YYYY-MM-DD> <title>/",
+    "Lists decisions, new questions, new terms and action items with owners, and shows that list before editing any file",
+    "Updates the existing files (architecture.md, glossary.md, open-questions.md) and does not create a parallel file",
+    "Puts the unknown status codes in _context/open-questions.md with an owner and what it blocks, and appends the decision as a dated line to _context/decisions-log.md"
+  ],
+  "must_not": [
+    "Creates a new notes or summary file instead of updating the existing project files",
+    "Decides an architecture question itself instead of naming the architect as its owner"
+  ]
+}

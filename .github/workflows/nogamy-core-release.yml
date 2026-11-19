@@ -1,0 +1,70 @@
+# Core repo only. A person releases a version: validate → all evals → .core-version → tag → GitHub release.
+# Every project's nogamy-core-update picks the release up on its next run.
+name: nogamy-core-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "New version, e.g. v1.4.0 (major = breaking: a project must act; minor = new; patch = fix)"
+        required: true
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  validate:
+    if: vars.NOGAMY_IS_CORE_REPO == 'true' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Version format
+        run: echo "${{ inputs.version }}" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$' || { echo "version must look like v1.4.0"; exit 1; }
+      - name: Validate the core
+        env:
+          NOGAMY_CLIENT_TERMS: ${{ secrets.NOGAMY_CLIENT_TERMS }}
+        run: python3 nogamy/ops/validate_core.py
+
+  evals:
+    needs: validate
+    uses: ./.github/workflows/nogamy-core-evals.yml
+    with:
+      only_changed: false
+    secrets: inherit
+
+  release:
+    needs: evals
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Version file, tag, release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          prev="$(git describe --tags --abbrev=0 2>/dev/null || true)"
+          echo "$VERSION" > .core-version
+          python3 nogamy/ops/checksums.py write "$VERSION"
+          git config user.name "nogamy-core-release"
+          git config user.email "nogamy-core-release@users.noreply.github.com"
+          git add .core-version nogamy/core-checksums.txt
+          git commit -m "release: $VERSION" || true
+          git tag -a "$VERSION" -m "Nogamy core $VERSION"
+          git push origin HEAD:main "$VERSION"
+          {
+            echo "## What changed"
+            echo
+            if [ -n "$prev" ]; then git log --no-merges --format='- %s' "$prev..$VERSION" | grep -v '^- release:' || true
+            else echo "- First release"; fi
+            echo
+            echo "## Feedback closed in this version"
+            echo
+            since="$( [ -n "$prev" ] && git log -1 --format=%cI "$prev" || echo 1970-01-01 )"
+            gh issue list --repo "${{ github.repository }}" --label feedback --state closed \
+              --search "closed:>=${since%%T*}" --json number,title,labels \
+              -q '.[] | "- #\(.number) \(.title)"' || true
+          } > "$RUNNER_TEMP/notes.md"
+          gh release create "$VERSION" --title "Nogamy core $VERSION" --notes-file "$RUNNER_TEMP/notes.md"

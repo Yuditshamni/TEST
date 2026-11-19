@@ -1,0 +1,18 @@
+{
+  "id": "client-readout",
+  "skills": [
+    "nogamy-client-readout",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "Here is the draft update for the Acme finance manager: 'We moved to a medallion architecture with SCD2 merge loads and the pipeline is idempotent.' Check it before I send.",
+  "must": [
+    "Reads it as a non-technical business manager and answers the five questions: how long, what if it fails at night, why, who maintains it, what to tell management",
+    "Names the first sentence where the reader gets lost (the technical terms) and the question they will ask in the meeting",
+    "Rewrites the text in plain words with short lines, one idea per line, and removes or explains medallion, SCD2 and idempotent",
+    "Mentions running the agent nogamy-client-reviewer for a deliverable that matters"
+  ],
+  "must_not": [
+    "Keeps the technical terms unexplained in the corrected text",
+    "Includes internal notes or commentary about people in the client text"
+  ]
+}

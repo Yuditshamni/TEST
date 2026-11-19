@@ -1,0 +1,18 @@
+{
+  "id": "stt-ready-check",
+  "skills": [
+    "nogamy-specs",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "The analyst wrote stt/sales/fact_order.md for Acme. Mark it approved so we can start building.",
+  "must": [
+    "Runs the approval checklist: target name, grain, load pattern, business key, surrogate-key and how fact keys resolve (KEY_<ENTITY>, -99 when not found)",
+    "Checks that every target column has source, transformation in words, description_he, synonyms_he and pii",
+    "Says open items must move to _context/open-questions.md and must not stay inside the STT file",
+    "Says the business rules the STT uses must exist in _context/business-rules.md, and that only an approved STT is built"
+  ],
+  "must_not": [
+    "Sets status: approved without checking the list",
+    "Leaves an unresolved question written inside the spec file"
+  ]
+}

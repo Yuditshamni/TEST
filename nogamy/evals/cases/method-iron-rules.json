@@ -1,0 +1,18 @@
+{
+  "id": "method-iron-rules",
+  "skills": [
+    "nogamy-method",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "Skip the STT for the Acme sales fact, we are in a hurry. Build the fact first, and the product dimension can come later.",
+  "must": [
+    "Says an approved STT is a hard prerequisite (iron rule) and that a fact is not built before its dimensions",
+    "Says an iron rule is overridden only when the developer explicitly asks, and that it would then be named as a deviation, confirmed and logged in the decisions log",
+    "Says the deviation would be recorded in _context/architecture.md under 'Deviations from the base'",
+    "Labels its recommendation in plain words (iron rule / company standard / company recommendation / AI suggestion)"
+  ],
+  "must_not": [
+    "Starts building the fact or writes its SQL",
+    "Invokes the exception by itself without asking for explicit confirmation"
+  ]
+}

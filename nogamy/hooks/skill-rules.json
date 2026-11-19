@@ -1,0 +1,20 @@
+{
+  "_comment": "Skill before file (AGENTS.md). path = folder fragment from the repo root; ext = optional file ending; first match wins. Core file. Any AI tool follows this table; the hook (nogamy_hook.py) enforces it. A project adds stricter rules in _context/skill-rules.json (same shape, checked first).",
+  "rules": [
+    { "path": "fabric/data/pipelines/",          "skill": "nogamy-build-pipeline" },
+    { "path": "fabric/data/",    "ext": ".sql",  "skill": "nogamy-db-objects" },
+    { "path": "fabric/bi/",                      "skill": "nogamy-semantic-model" },
+    { "path": "db/",             "ext": ".sql",  "skill": "nogamy-db-objects" },
+    { "path": "scripts/",        "ext": ".sql",  "skill": "nogamy-deploy" },
+    { "path": "qa/deploy/",                      "skill": "nogamy-deploy" },
+    { "path": "qa/",             "ext": ".sql",  "skill": "nogamy-qa-checks" },
+    { "path": "etl/",                            "skill": "nogamy-build-pipeline" },
+    { "path": "bi/",                             "skill": "nogamy-semantic-model" },
+    { "path": "stt/",                            "skill": "nogamy-specs" },
+    { "path": "sources/",                        "skill": "nogamy-specs" },
+    { "path": ".claude/skills/", "ext": "SKILL.md", "skill": "nogamy-create-skill" }
+  ],
+  "read_by_section": [
+    "standards/base_prompt.md"
+  ]
+}

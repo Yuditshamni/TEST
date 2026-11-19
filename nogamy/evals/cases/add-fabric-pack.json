@@ -1,0 +1,19 @@
+{
+  "id": "add-fabric-pack",
+  "skills": [
+    "nogamy-add-pack",
+    "nogamy-project-memory"
+  ],
+  "request": "We start working on a Fabric Warehouse for Acme but PROJECT.md has no Packs: fabric. I'll copy tools/fabric from my other project, ok?",
+  "must": [
+    "Says no to copying by hand: the pack comes only through add-pack from the core release, as a PR",
+    "Tells the developer in at most 3 short lines what the pack adds and asks 'Add the fabric pack now?'",
+    "Asks only for values still empty in PROJECT.md (DEV, TEST, PROD workspace names, AI identity for DEV), one question each, and does not guess a name",
+    "Runs core_update.py add-pack with --set per known value and --open-question per unknown one, instead of editing PROJECT.md itself",
+    "Gives the PR link and says the developer reviews and merges it"
+  ],
+  "must_not": [
+    "Copies pack files from another project or writes them by hand",
+    "Writes a real workspace name or tenant into a core file"
+  ]
+}

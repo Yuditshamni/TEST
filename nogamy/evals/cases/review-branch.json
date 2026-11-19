@@ -1,0 +1,19 @@
+{
+  "id": "review-branch",
+  "skills": [
+    "nogamy-review",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "Review the branch feature/acme-orders before I open the PR.",
+  "must": [
+    "Reads the diff and does not edit files",
+    "Says the agent nogamy-code-reviewer is run for a fresh-eye pass and its findings are added",
+    "Checks idempotency of each load, the IS_LAST filter, no environment name or server name in code, and that the migration agrees with the object file",
+    "Reports in the fixed format: Summary, What's solid, Critical, Recommended, Minor, Idempotency, Not verified",
+    "Labels each finding as iron rule / company standard / company recommendation / AI suggestion"
+  ],
+  "must_not": [
+    "Invents risks with no concrete scenario",
+    "Fixes the code itself instead of reporting"
+  ]
+}

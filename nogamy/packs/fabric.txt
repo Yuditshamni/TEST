@@ -1,0 +1,33 @@
+# packs/fabric.txt — the Fabric pack: files only a Microsoft Fabric project needs.
+#
+# Same syntax as core-manifest.txt. A path here is core only in a project whose
+# PROJECT.md -> Identity -> "Packs:" lists "fabric". Added by the skill nogamy-add-pack
+# (python nogamy/ops/core_update.py add-pack --name fabric).
+#   +path   seed: copied once if missing, then owned by the project (never synced, never locked)
+#
+# Skills are NOT here: every skill is generic and in the core of every project. Its Fabric
+# knowledge is `references/fabric.md` inside the skill folder, read when _context/platform.md
+# names Fabric. A skill that needs a file below checks for it and offers nogamy-add-pack.
+#
+# Never the whole fabric/ folder: fabric/data/ holds the project's own SQL and pipelines.
+
+# Framework objects (a change here needs a migration in each project; the update PR says so)
+fabric/README.md
+fabric/data/WH_DWH.Warehouse/MNG/Tables/MNG_BRONZE_CONFIGURATION.sql
+fabric/data/WH_DWH.Warehouse/MNG/Tables/MNG_BRONZE_GOLD_DELTA.sql
+fabric/data/WH_DWH.Warehouse/MNG/Tables/MNG_MIGRATION_LOG.sql
+fabric/data/WH_DWH.Warehouse/QA/StoredProcedures/SP_DQA.sql
+fabric/data/WH_DWH.Warehouse/QA/Tables/QA_DQA_QUERY.sql
+fabric/data/WH_DWH.Warehouse/QA/Tables/QA_DQA_RESULT.sql
+fabric/data/pipelines/_shared/GPL_DQA.DataPipeline/
+
+# Tools that talk to Fabric
+tools/fabric/
+tools/migrate/
+
+# Microsoft Learn MCP (verify Fabric facts before relying on them)
+.mcp.json
+.vscode/mcp.json
+
+# Fabric facts we depend on: the project keeps them in _context/platform-facts.md (nogamy-platform-watch,
+# watch list in .claude/skills/nogamy-platform-watch/references/fabric.md). No seed file.

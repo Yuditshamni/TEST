@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "sh nogamy/hooks/nogamy-hook.sh"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "sh nogamy/hooks/nogamy-hook.sh"
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "sh nogamy/hooks/nogamy-hook.sh"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "sh nogamy/hooks/nogamy-hook.sh"
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "sh nogamy/hooks/nogamy-hook.sh"
+      }
+    ]
+  }
+}

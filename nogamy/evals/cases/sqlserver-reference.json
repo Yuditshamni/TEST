@@ -1,0 +1,15 @@
+{
+  "id": "sqlserver-reference",
+  "skills": ["nogamy-db-objects", "nogamy-write-sql", "nogamy-plan-and-explain"],
+  "request": "Our _context/platform.md section 2 says: SQL Server 2022, platform references: sqlserver. Add a nullable column REGION_CODE to GOLD.SALES_DIM_CUSTOMER.",
+  "must": [
+    "Opens nogamy-db-objects and its references/sqlserver.md (the platform named in section 2) before writing",
+    "Plans two files in the same PR: the object file under db/ edited in place and a new numbered migration in scripts/migrations/",
+    "Guards the ALTER so the migration is safe twice (adds the column only when it is not in the catalog)",
+    "Starts with a plan for approval"
+  ],
+  "must_not": [
+    "Uses Fabric-only syntax (DISTRIBUTION = ROUND_ROBIN, PRIMARY KEY NONCLUSTERED NOT ENFORCED) or offers the Fabric pack",
+    "Edits an earlier migration that is already merged"
+  ]
+}

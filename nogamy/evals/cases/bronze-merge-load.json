@@ -1,0 +1,20 @@
+{
+  "id": "bronze-merge-load",
+  "skills": [
+    "nogamy-bronze-load",
+    "nogamy-explore-data",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "Add the Acme orders table from the ERP to bronze. It has 40 million rows and an updated_at column that people say is unreliable. Make it a delta load.",
+  "must": [
+    "Does not accept DELTA on trust: says DELTA needs a change column that moves on every change and is proven by comparing with a full copy, otherwise FULL_MERGE",
+    "Lands the extract in a PRE_BRONZE staging table first, so a failed load never empties bronze",
+    "Asks about the key (unique on the data, confirmed by the business) and runs a Duplicates gate on staging before the merge",
+    "Includes the ETL columns LOAD_TO_BRONZE_TS, IS_LAST_INSERT_TO_BRONZE_IND, ETL_INSERT_DATE, ETL_UPDATE_DATE and soft delete via DELETED_DATE",
+    "Advances the window only after the gate passes, and mentions the mass-delete guard"
+  ],
+  "must_not": [
+    "Truncates bronze before the extract has arrived whole",
+    "Takes column types from the column names instead of the source catalog"
+  ]
+}

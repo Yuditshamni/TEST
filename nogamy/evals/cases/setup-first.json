@@ -1,0 +1,19 @@
+{
+  "id": "setup-first",
+  "skills": [
+    "nogamy-project-setup",
+    "nogamy-project-memory",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "New project for Acme Retail. _context/platform.md says status: not set up. Please design the customer dimension and the first pipeline.",
+  "must": [
+    "Does not design or build anything yet: says setup (nogamy-project-setup) must run first because platform.md is 'not set up'",
+    "Asks first what documents already exist (proposal, standards, source lists) and says they are converted to Markdown into _private/raw/ before the interview",
+    "Asks the interview questions one at a time, with 2-4 options where a choice exists",
+    "Says that 'I don't know' becomes a row in _context/open-questions.md with an owner and what it blocks, and nothing is guessed or defaulted silently"
+  ],
+  "must_not": [
+    "Proposes a table design, SQL or a pipeline in this answer",
+    "Asks several setup questions in one long list or skips the Git and promotion questions"
+  ]
+}

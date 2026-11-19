@@ -1,0 +1,46 @@
+# Core repo only. From the usage-data branch and the open feedback issues:
+#   every day   the pinned issue "Nogamy control panel" (label control-panel) is rewritten in place
+#   Sundays     also a new report issue (label core-report), with the AI triage when ANTHROPIC_API_KEY is set
+name: nogamy-core-curator
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  report:
+    if: vars.NOGAMY_IS_CORE_REPO == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Usage data
+        run: |
+          git fetch --depth 1 origin usage-data:usage-data 2>/dev/null && git worktree add "$RUNNER_TEMP/usage" usage-data \
+            || mkdir -p "$RUNNER_TEMP/usage"
+      - name: Report
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          weekly=$([ "$(date -u +%u)" = "7" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ] && echo yes || echo no)
+          TRIAGE=
+          if [ "$weekly" = yes ] && [ -n "$ANTHROPIC_API_KEY" ]; then pip install --quiet anthropic && TRIAGE=--triage; fi
+          python3 nogamy/ops/curator.py --usage "$RUNNER_TEMP/usage" --out "$RUNNER_TEMP/report.md" $TRIAGE
+          gh label create control-panel --color 0E8A16 --force >/dev/null
+          gh label create core-report --color 1D76DB --force >/dev/null
+          panel=$(gh issue list --label control-panel --state open --limit 1 --json number -q '.[0].number')
+          if [ -n "$panel" ]; then
+            gh issue edit "$panel" --body-file "$RUNNER_TEMP/report.md" >/dev/null
+          else
+            url=$(gh issue create --title "Nogamy control panel" --body-file "$RUNNER_TEMP/report.md" --label control-panel)
+            gh issue pin "$url" || true
+          fi
+          if [ "$weekly" = yes ]; then
+            gh issue create --title "Core report $(date -u +%Y-%m-%d)" --body-file "$RUNNER_TEMP/report.md" --label core-report
+          fi
+          cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"

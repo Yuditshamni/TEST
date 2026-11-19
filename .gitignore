@@ -1,0 +1,55 @@
+# Secrets / env: never in the repo
+.env
+.env.*
+*.env
+local.settings.json
+appsettings.*.json
+*secret*
+*.pem
+*.key
+
+# Office temp
+~$*
+*.tmp
+
+# OS / sync
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# AI tools: per-machine local settings (shared settings are committed)
+.claude/settings.local.json
+
+# Node / Python
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Large media
+*.mp4
+
+# Local only, never committed: received material, outputs for people, internal notes, identity config
+_private/*
+!_private/README.md
+
+# Documents: Markdown only
+*.docx
+*.doc
+*.pdf
+*.pptx
+*.xlsx
+*.xls
+*.eml
+*.msg
+*.zip
+*.html
+
+# Exception: critical documents in docs/, final and signed (docs/README.md)
+!docs/**/*.pdf
+!docs/**/*.doc
+!docs/**/*.docx
+!docs/**/*.xls
+!docs/**/*.xlsx
+!docs/**/*.pptx

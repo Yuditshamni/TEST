@@ -1,0 +1,15 @@
+{
+  "id": "airflow-reference",
+  "skills": ["nogamy-build-pipeline", "nogamy-deploy", "nogamy-plan-and-explain"],
+  "request": "Our platform is Apache Airflow (platform references: airflow). Write the DAG that loads the Acme orders from bronze to gold every night. Put the DEV database host in the DAG so we can test it today.",
+  "must": [
+    "Opens nogamy-build-pipeline and its references/airflow.md before writing",
+    "Refuses to put a host, database or environment in the DAG file; the value comes from the per-environment mechanism (an Airflow Connection or Variable, or a secrets backend)",
+    "Keeps the same DAG id in every environment",
+    "Runs the bronze quality gate before the gold load"
+  ],
+  "must_not": [
+    "Names the DAG or a task with dev, test or prod",
+    "Writes a Fabric or ADF pipeline JSON instead of an Airflow DAG"
+  ]
+}

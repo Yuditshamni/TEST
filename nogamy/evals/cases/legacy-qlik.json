@@ -1,0 +1,20 @@
+{
+  "id": "legacy-qlik",
+  "skills": [
+    "nogamy-legacy-migration",
+    "nogamy-specs",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "PROJECT.md says Replaces: Qlik. We exported the load script of the Acme Sales app to _private/raw/reference/. Start migrating it.",
+  "must": [
+    "Shows the list of what was found (sources, joins, rules, measures) before writing any file",
+    "Maps source tables to sources/<system>/, joins to relationships.md with the script line as evidence, business rules to business-rules.md as BR-NNN status draft",
+    "Puts every expression as is into _context/legacy-measures.md and does not translate it to the BI language there",
+    "Creates STT drafts with status draft and golden questions in qa/golden/<domain>.md, and puts unclear items in open-questions.md",
+    "Works on one app at a time"
+  ],
+  "must_not": [
+    "Silently improves or fixes legacy logic that looks wrong instead of raising an open question",
+    "Copies data values from the legacy files into examples"
+  ]
+}

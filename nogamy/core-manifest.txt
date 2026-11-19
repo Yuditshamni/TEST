@@ -1,0 +1,77 @@
+# core-manifest.txt — what is core (Nogamy) in every project.
+#
+# Core paths are read-only in a project. Three things read this file:
+#   nogamy/ops/core_sync.py      a core update replaces exactly these paths (skill nogamy-core-update)
+#   nogamy/ops/core_guard.py     the PR check fails when a core file differs from the released core
+#   nogamy/hooks/nogamy_hook.py  the agent hook blocks editing them (Claude Code, Copilot, Codex)
+#
+# Syntax, one entry per line:
+#   path/file.md     one file
+#   folder/          the whole folder, recursive
+#   a/b-*/  a/*.yml  `*` matches inside one path segment
+#   !path            exception: not core, even inside a core folder
+# Everything not listed is project-owned and is never touched by a core update.
+# Project-owned skeletons (PROJECT.md, README.md, _context/*.md, CODEOWNERS, .core-version)
+# come once with "Use this template" and are never synced.
+# Files that exist only in the core repo: nogamy/core-only.txt (removed from projects on update).
+# Platform files (Fabric): nogamy/packs/, added per project with nogamy-add-pack.
+
+# Agent instructions (AGENTS.md is the source; the others only point to it)
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.github/copilot-instructions.md
+
+# Guides for people
+START-HERE.md
+HOW-WE-WORK.md
+
+# Skills and automation
+.claude/skills/nogamy-*/
+.claude/agents/nogamy-*.md
+.github/workflows/nogamy-*.yml
+!.github/workflows/nogamy-core-ci.yml
+!.github/workflows/nogamy-core-release.yml
+!.github/workflows/nogamy-core-evals.yml
+!.github/workflows/nogamy-core-curator.yml
+!.github/workflows/nogamy-core-fix.yml
+
+# Agent and editor config (one hook script, nogamy/hooks/, wired for each tool)
+.claude/settings.json
+.codex/hooks.json
+.cursor/hooks.json
+.gemini/settings.json
+.gitignore
+.gitattributes
+
+# Method, tools, core automation
+nogamy/
+!nogamy/tests/
+standards/
+tools/
+!tools/project/
+
+# Folder READMEs and templates
+_context/README.md
+_private/README.md
+docs/README.md
+db/README.md
+etl/README.md
+bi/README.md
+qa/README.md
+qa/data/README.md
+qa/deploy/README.md
+qa/deploy/_template.md
+qa/golden/README.md
+qa/golden/_template.md
+scripts/README.md
+sources/README.md
+sources/_template/
+stt/README.md
+stt/_template/
+ui/README.md
+ui/_template/
+
+# Platform packs: nogamy/packs/<name>.txt (e.g. fabric: framework objects, tools/fabric, the MCP server).
+# A pack's paths are core only in a project whose PROJECT.md `Packs:` lists it; the pack owns them, even
+# inside a folder listed here (tools/).

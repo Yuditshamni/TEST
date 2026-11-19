@@ -1,0 +1,1 @@
+Read `AGENTS.md` at the repo root. It is the single source of instructions for this repo. Skills (`.claude/skills/`) and agents (`.claude/agents/`) load natively in VS Code; nothing is copied to `.github/skills/` or `.github/agents/`.

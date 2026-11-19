@@ -1,0 +1,45 @@
+# Core repo only (nogamy/core-only.txt). Web form for feedback; projects send through the skill nogamy-feedback.
+name: Nogamy feedback
+description: A gap, a mistake or a wish in the Nogamy core (nogamy-* skills, AGENTS.md, standards, tools, templates).
+title: "[<skill or file>] "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **No personal or client data.** No names, e-mails, IDs, real table names, workspace IDs, URLs or values.
+        Describe the pattern, not the instance. Inside a project, use the agent skill nogamy-feedback instead: it checks the text for such data first.
+  - type: input
+    id: skill
+    attributes:
+      label: Skill
+      description: "nogamy-... or AGENTS.md / standards/... / tools/... / framework"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [gap, wrong, unclear, not picked, new skill, bug]
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested change
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround used in the project

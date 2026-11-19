@@ -1,0 +1,19 @@
+{
+  "id": "checks-after-build",
+  "skills": [
+    "nogamy-qa-checks",
+    "nogamy-dev-workflow"
+  ],
+  "request": "The Acme customer dimension was just built in DEV. Write its quality checks.",
+  "must": [
+    "Creates qa/data/<GOLD TABLE>.sql, one query returning one row per check with PASS/FAIL",
+    "Includes at least rows > 0, no duplicate business key, no NULL key and the -99 row exists, plus total vs source",
+    "Requires running the load again and then the checks again, with the same result, to prove idempotency",
+    "Says that a check not run is written as 'not run' with the reason, and that at L0 the checks go to a person in a run sheet",
+    "Says the checks read counts and sums, never rows of people or customers"
+  ],
+  "must_not": [
+    "Writes an expected result as a fixed number for production data",
+    "Treats a check that was not run as a pass"
+  ]
+}

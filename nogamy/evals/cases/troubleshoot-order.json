@@ -1,0 +1,19 @@
+{
+  "id": "troubleshoot-order",
+  "skills": [
+    "nogamy-troubleshoot",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "The Acme daily load pipeline failed last night in DEV. I think we just need to add a retry, do it.",
+  "must": [
+    "Starts by reading the error: asks for the exact error text and the status of every step inside the item, not only of the item",
+    "Asks for one named query result at a time and not 'the logs'",
+    "Says a diagnosis is read-only and the fix is planned and approved before any change",
+    "Checks the known-causes table before guessing, and says a retry is only for a step that is safe to repeat and a documented transient cause",
+    "Says that after 3 failed fix attempts it stops and reports what was tried and what it suspects"
+  ],
+  "must_not": [
+    "Adds a retry or any fix before reading the error",
+    "Proposes the same fix a fourth time after three failures"
+  ]
+}

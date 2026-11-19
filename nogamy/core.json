@@ -1,0 +1,4 @@
+{
+  "core_repo": "nogamy-tech/data_eng_template",
+  "note": "The Nogamy core repo (this template). Releases, feedback issues and usage data go there, through each developer's own gh access. The env var NOGAMY_CORE_REPO overrides it."
+}

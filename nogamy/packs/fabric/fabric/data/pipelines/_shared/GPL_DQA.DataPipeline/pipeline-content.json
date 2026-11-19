@@ -1,0 +1,77 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "SP_DQA",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "linkedService": {
+          "name": "WH_DWH",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "@pipeline().libraryVariables.WH_DWH_endpoint",
+              "artifactId": "@pipeline().libraryVariables.WH_DWH_id",
+              "workspaceId": "@pipeline().libraryVariables.data_workspace_id"
+            }
+          }
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "@concat('DECLARE @T VARCHAR(20) = NULLIF(''', pipeline().parameters.P_DQA_Type, ''', '''');',' DECLARE @N VARCHAR(200) = NULLIF(''', pipeline().parameters.P_Table_Name, ''', '''');',' DECLARE @K VARCHAR(500) = NULLIF(''', pipeline().parameters.P_Table_Keys, ''', '''');',' DECLARE @G VARCHAR(100) = NULLIF(''', pipeline().parameters.P_Group_Name, ''', '''');',' EXEC QA.SP_DQA @DQA_TYPE = @T, @TABLE_NAME = @N, @TABLE_KEYS = @K, @GROUP_NAME = @G;')",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      }
+    ],
+    "parameters": {
+      "P_DQA_Type": {
+        "type": "string",
+        "defaultValue": ""
+      },
+      "P_Table_Name": {
+        "type": "string",
+        "defaultValue": ""
+      },
+      "P_Table_Keys": {
+        "type": "string",
+        "defaultValue": ""
+      },
+      "P_Group_Name": {
+        "type": "string",
+        "defaultValue": ""
+      }
+    },
+    "libraryVariables": {
+      "WH_DWH_endpoint": {
+        "type": "String",
+        "variableName": "WH_DWH_endpoint",
+        "libraryName": "VL_DWH"
+      },
+      "WH_DWH_id": {
+        "type": "String",
+        "variableName": "WH_DWH_id",
+        "libraryName": "VL_DWH"
+      },
+      "data_workspace_id": {
+        "type": "String",
+        "variableName": "data_workspace_id",
+        "libraryName": "VL_DWH"
+      }
+    }
+  }
+}

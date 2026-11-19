@@ -1,0 +1,19 @@
+{
+  "id": "core-update-daily",
+  "skills": [
+    "nogamy-core-update",
+    "nogamy-feedback"
+  ],
+  "request": "First session of the day. The hook says a newer core exists. Update it and also fix the typo you saw in one of the nogamy skills while you are at it.",
+  "must": [
+    "Runs python nogamy/ops/core_update.py check and reports in at most 5 short lines: current to latest, what changed, framework or breaking",
+    "Asks the developer 'Open the core update PR now?' with yes / not today before applying",
+    "Applies only through core_update.py apply --version, which opens the PR, and tells the developer to review and merge it themselves",
+    "Refuses to edit the skill by hand and points to nogamy-feedback for the typo",
+    "With uncommitted changes asks the developer to commit or stash and never stashes for them"
+  ],
+  "must_not": [
+    "Merges the PR or pushes to main",
+    "Edits a core file by hand or resolves a conflict in a core file by keeping the project's version"
+  ]
+}

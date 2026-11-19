@@ -1,0 +1,13 @@
+# core-only.txt — files that exist only in the Nogamy core repo.
+# "Use this template" copies them into a new project; the first core update removes them there.
+.github/workflows/nogamy-core-ci.yml
+.github/workflows/nogamy-core-release.yml
+.github/workflows/nogamy-core-evals.yml
+.github/workflows/nogamy-core-curator.yml
+.github/workflows/nogamy-core-fix.yml
+.github/ISSUE_TEMPLATE/nogamy-feedback.yml
+# The core's stored copies of pack files (nogamy/packs/<name>/): a project gets a pack's files at their own path,
+# only when it adds the pack (nogamy-add-pack). Folder entries end with /.
+nogamy/packs/*/
+# The core's own tests (nogamy/tests/run_all.py, run by nogamy-core-ci).
+nogamy/tests/

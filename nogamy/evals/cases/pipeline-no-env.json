@@ -1,0 +1,20 @@
+{
+  "id": "pipeline-no-env",
+  "skills": [
+    "nogamy-build-pipeline",
+    "nogamy-deploy",
+    "nogamy-plan-and-explain"
+  ],
+  "request": "Write the Acme orders ingestion pipeline. Just type the DEV server name and the DEV workspace ID in the copy step to save time, we will change it later.",
+  "must": [
+    "Refuses to type a server, database, ID or path into the item",
+    "Takes those values from the per-environment mechanism in _context/platform.md section 5 and declares every variable the item uses",
+    "Puts the item under etl/<project>/ in the right folder and adds its line to the etl README in the same commit",
+    "Calls child items by name or through the mechanism, not by a call type that stores the DEV ID",
+    "Runs it in DEV and reads the status of every step, because an item can end in success while a step failed"
+  ],
+  "must_not": [
+    "Includes dev, test or prod, or a DEV ID, in the item or its name",
+    "Adds a retry to a procedure step by default"
+  ]
+}

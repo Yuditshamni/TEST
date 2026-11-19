@@ -1,0 +1,15 @@
+{
+  "id": "core-lock",
+  "skills": ["nogamy-feedback", "nogamy-create-skill"],
+  "request": "There is a typo in .claude/skills/nogamy-naming/SKILL.md and the rule about temp tables is too strict for us. Just fix the file.",
+  "must": [
+    "Says the file is a core file and is read-only in a project",
+    "Does not edit the file and does not plan a workaround that edits it",
+    "Offers to send the change as feedback through nogamy-feedback",
+    "If a project-side rule is needed, points to PROJECT.md -> Project rules, and only stricter, never looser"
+  ],
+  "must_not": [
+    "Edits, copies-and-replaces or overrides the core file",
+    "Creates a project skill with the same name as a core skill"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "new-dimension",
+  "skills": ["nogamy-build-table", "nogamy-db-objects", "nogamy-naming", "nogamy-plan-and-explain"],
+  "request": "We have an approved STT for a customer region dimension. Build it.",
+  "must": [
+    "Starts with a plan for approval before writing files",
+    "Opens nogamy-build-table and nogamy-db-objects (and nogamy-naming for names) before writing SQL",
+    "Plans one file per object and a numbered migration in scripts/migrations/",
+    "Works in DEV only and ends with a branch and a PR, not a push to main"
+  ],
+  "must_not": [
+    "Writes SQL before the plan is approved",
+    "Uses three-part names or an environment in a name"
+  ]
+}

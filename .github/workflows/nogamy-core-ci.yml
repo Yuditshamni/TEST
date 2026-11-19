@@ -1,0 +1,90 @@
+# Core repo only. Every PR to the core:
+#   validate  structure, client data, compile, hook configs (nogamy/ops/validate_core.py)
+#   tests     every offline test: hook, migrations, template -> project -> update -> guard, upgrades (nogamy/tests/)
+#   live-db   the migration runner against real Postgres and SQL Server containers (test data only)
+#   evals     the agent's behaviour on the changed skills (nogamy/evals/); skipped (grey) without ANTHROPIC_API_KEY
+name: nogamy-core-ci
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    if: vars.NOGAMY_IS_CORE_REPO == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      has_key: ${{ steps.key.outputs.has_key }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate the core
+        env:
+          NOGAMY_CLIENT_TERMS: ${{ secrets.NOGAMY_CLIENT_TERMS }}
+        run: python3 nogamy/ops/validate_core.py
+      - name: Evals can run?
+        id: key
+        env:
+          KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "$KEY" ]; then echo "has_key=true" >> "$GITHUB_OUTPUT"
+          else echo "::warning::ANTHROPIC_API_KEY is not set: the evals job is skipped, not passed (nogamy/docs/setup.md)"; fi
+
+  tests:
+    if: vars.NOGAMY_IS_CORE_REPO == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Offline tests
+        run: python3 nogamy/tests/run_all.py
+
+  live-db:
+    if: vars.NOGAMY_IS_CORE_REPO == 'true'
+    runs-on: ubuntu-latest
+    env:
+      PGPASSWORD: nogamy-ci-only
+      NOGAMY_LIVE_PWD: Nogamy-ci-${{ github.run_id }}-Aa1
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: nogamy-ci-only
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 20
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: Nogamy-ci-${{ github.run_id }}-Aa1
+        ports: ["1433:1433"]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Drivers
+        run: |
+          sudo apt-get install -y -q libltdl7 libkrb5-3 libgssapi-krb5-2 >/dev/null
+          pip install --quiet "psycopg[binary]" mssql-python
+      - name: Postgres
+        env:
+          NOGAMY_LIVE: postgres
+        run: python3 nogamy/tests/test_migrations_live.py
+      - name: SQL Server
+        env:
+          NOGAMY_LIVE: sqlserver
+        run: |
+          for i in $(seq 1 30); do
+            python3 -c "import mssql_python, os; mssql_python.connect('Server=localhost,1433;Database=master;UID=sa;Encrypt=yes;TrustServerCertificate=yes;PWD=' + os.environ['NOGAMY_LIVE_PWD'] + ';')" 2>/dev/null && break
+            sleep 3
+          done
+          python3 nogamy/tests/test_migrations_live.py
+      - name: The worked example on SQL Server (migrations, load twice, QA all PASS)
+        run: python3 nogamy/tests/test_example_live.py
+
+  evals:
+    needs: validate
+    if: vars.NOGAMY_IS_CORE_REPO == 'true' && needs.validate.outputs.has_key == 'true'
+    uses: ./.github/workflows/nogamy-core-evals.yml
+    with:
+      only_changed: true
+    secrets: inherit

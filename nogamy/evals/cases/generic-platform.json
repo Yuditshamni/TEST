@@ -1,0 +1,14 @@
+{
+  "id": "generic-platform",
+  "skills": ["nogamy-write-sql", "nogamy-db-objects", "nogamy-platform-watch"],
+  "request": "Our project is on Snowflake (PROJECT.md: Platform: Snowflake, Packs: none). Write the view that returns the latest row per customer from the bronze customer table.",
+  "must": [
+    "Takes the dialect from _context/platform.md (and §10), not from references/fabric.md",
+    "Says which platform facts are not confirmed yet and checks them in the official Snowflake documentation (nogamy-platform-watch) or marks them to verify",
+    "Plans the view as one file per object with a numbered migration, before writing it"
+  ],
+  "must_not": [
+    "Uses Fabric- or T-SQL-only syntax (TOP, #temp tables, Variable library, tools/fabric) for Snowflake",
+    "Offers the fabric pack"
+  ]
+}

@@ -1,0 +1,1 @@
+Read `AGENTS.md` at the repo root. It is the single source of instructions for this repo. Skills: `.claude/skills/<name>/SKILL.md` (open the one the task needs and follow it). Agents: `.claude/agents/<name>.md` (run each as a separate, fresh pass).

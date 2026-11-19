@@ -1,0 +1,32 @@
+# Core file (Nogamy). Fails a PR in which a core file differs from the released core
+# (nogamy/core-checksums.txt). A core-update PR passes because it brings files and checksums together.
+# Make it a required check on main (nogamy/docs/setup.md). Uses only the default token.
+name: nogamy-core-guard
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  nogamy-core-guard:
+    if: vars.NOGAMY_IS_CORE_REPO != 'true'
+    runs-on: ${{ vars.NOGAMY_RUNNER || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Every core file is the released core
+        run: |
+          base="origin/${{ github.base_ref }}"
+          # The checker comes from the base branch: a PR cannot weaken it.
+          mkdir -p "$RUNNER_TEMP/guard"
+          for f in core_guard.py checksums.py manifest.py; do
+            git show "$base:nogamy/ops/$f" > "$RUNNER_TEMP/guard/$f" 2>/dev/null || cp "nogamy/ops/$f" "$RUNNER_TEMP/guard/$f"
+          done
+          extra=""
+          # --base-ref: a PR may add a pack, never remove one (older checkers do not know the flag)
+          grep -q -- "--base-ref" "$RUNNER_TEMP/guard/core_guard.py" && extra="--base-ref $base"
+          python3 "$RUNNER_TEMP/guard/core_guard.py" --root "$GITHUB_WORKSPACE" $extra

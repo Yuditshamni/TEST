@@ -1,0 +1,19 @@
+{
+  "id": "reconcile-before-demo",
+  "skills": [
+    "nogamy-reconcile-numbers",
+    "nogamy-qa-checks"
+  ],
+  "request": "Tomorrow we demo the Acme monthly revenue number to the client. The DWH total is 1,204,350 and the old system shows 1,198,900. Send it as is.",
+  "must": [
+    "Does not send the number; says it must be reconciled first",
+    "First asks whether it is the same question: same legacy measure, population, period, as-of date and filters",
+    "Reconciles at three levels: total, by month, by one dimension, with DWH vs legacy vs source",
+    "Checks the listed pitfalls such as join fan-out, -99 rows counted, UTC month boundary, case in codes or different refresh times",
+    "Gives a verdict ready / with caveats / needs revision, and says an unexplained difference means 'needs revision'"
+  ],
+  "must_not": [
+    "Rounds the difference away or calls the numbers close enough",
+    "Reads or shows individual customer rows instead of counts and sums"
+  ]
+}
